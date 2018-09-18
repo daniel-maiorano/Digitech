@@ -1,7 +1,8 @@
 --CTU-Dashboard.lua
 
-local wVersion="1.5"
+local wVersion="1.6"
 local wAppname="CTU Dashboard"
+local rootDir="/Apps"
 
 -- Locals for the application
 
@@ -61,12 +62,12 @@ local function loadImages()
     local sizeOpt = {"Compact","Large"}
     local idx
     for idx = 0, 20, 1 do
-        imgName = string.format("Apps/%s/images/"..sizeOpt[cfgSize].."/"..schemeOptions[cfgScheme].."/c-%.3d.png", wBrand, idx * 5)
+        imgName = string.format("%s/%s/images/"..sizeOpt[cfgSize].."/"..schemeOptions[cfgScheme].."/c-%.3d.png", rootDir, wBrand, idx * 5)
         gauge_c[idx] = lcd.loadImage(imgName)
     end
 
     for idx = 0, 5, 1 do
-        imgName = string.format("Apps/%s/images/"..sizeOpt[cfgSize].."/"..schemeOptions[cfgScheme].."/f-%.3d.png", wBrand, idx * 20)
+        imgName = string.format("%s/%s/images/"..sizeOpt[cfgSize].."/"..schemeOptions[cfgScheme].."/f-%.3d.png", rootDir, wBrand, idx * 20)
         gauge_f[idx] = lcd.loadImage(imgName)
     end
 end
@@ -77,7 +78,7 @@ local function loadLang()
     local content,e
 
     -- print(string.format("Lang %s", cfgLang))
-    local file = io.readall(string.format("/Apps/%s/text/%s.jsn", wBrand, cfgLang)) -- read the correct config file
+    local file = io.readall(string.format("%s/%s/text/%s.jsn", rootDir, wBrand, cfgLang)) -- read the correct config file
     if (file) then
         textMessage = json.decode(file)
     end
@@ -91,12 +92,12 @@ local function loadLang()
     langList={}
     langCode={}
 
-    for name, filetype, size in  dir(string.format("/Apps/%s/text", wBrand)) do
+    for name, filetype, size in  dir(string.format("%s/%s/text",rootDir, wBrand)) do
         
         if(string.sub(name,1,1)==".") then
             
         else
-            local f = io.readall(string.format("/Apps/%s/text/%s", wBrand, name)) -- read the correct config file
+            local f = io.readall(string.format("%s/%s/text/%s", rootDir, wBrand, name)) -- read the correct config file
             if (f) then
                 content = json.decode(f)
             end
@@ -150,7 +151,7 @@ local function fuelAlarm(percentage)
             if(fuelWarnTrigger<system.getTime()) then
                 fuelWarnTrigger=system.getTime()+fuelRepeat
                 if(fuelVoiceEnabled) then
-                    local fuelLowFile=string.format("/Apps/%s/audio/%s-low_fuel.wav",wBrand, cfgLang)
+                    local fuelLowFile=string.format("%s/%s/audio/%s-low_fuel.wav", rootDir, wBrand, cfgLang)
                     system.playFile(fuelLowFile, AUDIO_IMMEDIATE)
                 end
                 if(fuelVibration~=4) then
@@ -279,6 +280,9 @@ end
 -- Trubine Status
 local function DrawTurbineStatus(status, size)
     local ox, oy, H, W, wFont
+    
+    local rF,gF,bF=lcd.getFgColor()
+    local rB,gB,bB=lcd.getBgColor()
 
     if(size==1) then
         ox= 0
@@ -295,9 +299,9 @@ local function DrawTurbineStatus(status, size)
     end
 
     lcd.drawFilledRectangle(ox, oy, W, H)
-    lcd.setColor(255, 255, 255)
+    lcd.setColor(rB,gB,bB)
     lcd.drawText(ox + (W - lcd.getTextWidth(wFont, status)) / 2, oy, status, wFont)
-    lcd.setColor(0, 0, 0)
+    -- lcd.setColor(0, 0, 0)
 end
 --------------------------------------------------------------------
 -- Voltages
@@ -308,6 +312,9 @@ local function DrawVoltages(u_pump, u_ecu, size)
     local W = 44
     local H = 47
 
+    local rF,gF,bF=lcd.getFgColor()
+    local rB,gB,bB=lcd.getBgColor()
+
     if(size==1) then
         ox=53
         oy=5
@@ -316,6 +323,7 @@ local function DrawVoltages(u_pump, u_ecu, size)
         oy=3
     end
 
+    lcd.setColor(rF,gF,bF)
     lcd.drawRectangle(ox, oy, W, H)
     lcd.drawText(8 + ox, oy, "PUMP", FONT_MINI)
     lcd.drawText(12 + ox, 23 + oy, "ECU", FONT_MINI)
@@ -356,7 +364,7 @@ end
 --------------------------------------------------------------------
 -- Read messages file
 local function readCatalog()
-    local file = io.readall(string.format("/Apps/%s/catalog.jsn",wBrand)) -- read the catalog config file
+    local file = io.readall(string.format("%s/%s/catalog.jsn", rootDir, wBrand)) -- read the catalog config file
     if (file) then
         catalog = json.decode(file)
     end
@@ -366,7 +374,7 @@ end
 -- Read messages file
 local function readConfig(wECUType)
     print(string.format("ECU Type %s", wECUType))
-    local file = io.readall(string.format("/Apps/%s/%s", wBrand, catalog.ecu[tostring(wECUType)].file)) -- read the correct config file
+    local file = io.readall(string.format("%s/%s/%s", rootDir, wBrand, catalog.ecu[tostring(wECUType)].file)) -- read the correct config file
     if (file) then
         config = json.decode(file)
     end
@@ -405,7 +413,7 @@ local function getStatusText(statusSensorID)
                     end
                     if (lSpeech ~= nil) then
                         print(string.format("Status  %s", tostring(lSpeech)))
-                        system.playFile(string.format("/Apps/%s/audio/%s", wBrand, lSpeech), AUDIO_IMMEDIATE)
+                        system.playFile(string.format("%s/%s/audio/%s", rootDir, wBrand, lSpeech), AUDIO_IMMEDIATE)
                     end
                 end
             end
@@ -574,7 +582,7 @@ end
 local function saveMsgConfig()
     local configEncoded
     configEncoded=json.encode(config)
-    local f = io.open(string.format("/Apps/%s/%s", wBrand, catalog.ecu[tostring(wbECUType)].file),"w")
+    local f = io.open(string.format("%s/%s/%s", rootDir, wBrand, catalog.ecu[tostring(wbECUType)].file),"w")
     io.write(f,configEncoded)
     io.close(f)
     form.reinit(1)

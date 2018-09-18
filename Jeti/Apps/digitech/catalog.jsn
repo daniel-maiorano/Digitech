@@ -54,6 +54,17 @@
 			"Batt": "7",
 			"Pump": "8",
 			"Status": "9"
-		}		
+		},
+		"Digitech-TTU" : {
+			"brand": "Digitech",
+			"model": "TTU",
+			"version": "3.1",
+			"RPM": "2",
+			"EGT": "3",
+			"Fuel": "1",
+			"Batt": "5",
+			"Pump": "6",
+			"Status": "9"
+		}
 	}
 }
