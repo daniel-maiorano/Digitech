@@ -1,5 +1,5 @@
 # Digitech
 
 What you will find here:
-#LUA
-The LUA apps for Digitech devices related to Jeti Radios
+# Jeti
+Files related to Jeti radios (LUA apps, firmwares, device explorer files..)
