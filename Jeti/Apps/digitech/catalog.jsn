@@ -65,6 +65,17 @@
 			"Batt": "5",
 			"Pump": "6",
 			"Status": "9"
+		},
+		"Digitech TTU+" : {
+			"brand": "Digitech",
+			"model": "TTU+",
+			"version": "1",
+			"RPM": "2",
+			"EGT": "3",
+			"Fuel": "1",
+			"Batt": "5",
+			"Pump": "6",
+			"Status": "9"
 		}
 	}
 }
