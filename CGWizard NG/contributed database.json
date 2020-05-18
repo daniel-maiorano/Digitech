@@ -7,7 +7,7 @@
           "cgPoint":10,
           "sensorGap":882,
           "tolerance":10,
-          "noseSteering":1,
+          "noseSteering":true,
           "uuid":"E08515CF-4D83-4DFB-8CBF-B8770691A6EF",
           "picture":"",
           "brand":"Aviation Design",
@@ -26,7 +26,7 @@
           "refWeight":10234,
           "name":"Ultra Lightning",
           "tolerance":10,
-          "noseSteering":1
+          "noseSteering":true
         }
       ]
     }
