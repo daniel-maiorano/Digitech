@@ -1,0 +1,33 @@
+[
+    {
+      "version":"1",
+      "airframes":[
+        {
+          "sect":"Contributed",
+          "cgPoint":10,
+          "sensorGap":882,
+          "tolerance":10,
+          "noseSteering":1,
+          "uuid":"E08515CF-4D83-4DFB-8CBF-B8770691A6EF",
+          "picture":"",
+          "brand":"Aviation Design",
+          "notes":"stab incidence is not perfect",
+          "refWeight":9234,
+          "name":"Rafale"
+        },
+        {
+          "sect":"Contributed",
+          "cgPoint":104,
+          "sensorGap":780,
+          "uuid":"C708AFC3-006C-43F8-8744-EBD41369AA9B",
+          "picture":"",
+          "brand":"CARF",
+          "notes":"Best sport jet ever",
+          "refWeight":10234,
+          "name":"Ultra Lightning",
+          "tolerance":10,
+          "noseSteering":1
+        }
+      ]
+    }
+  ]
